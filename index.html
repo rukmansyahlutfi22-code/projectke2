@@ -72,7 +72,9 @@
       margin-bottom: 16px;
     }
 
-    .form-group { margin-bottom: 15px; }
+    .form-group {
+      margin-bottom: 15px;
+    }
 
     label {
       font-size: 10.5pt;
@@ -104,7 +106,9 @@
       cursor: pointer;
     }
 
-    .btn-submit { background-color: var(--success-color); }
+    .btn-submit {
+      background-color: var(--success-color);
+    }
 
     #area-aplikasi { display: none; }
 
@@ -116,8 +120,20 @@
       margin-bottom: 10px;
     }
 
-    #kamera-preview { width: 100%; height: auto; display: block; transform: scaleX(-1); }
-    #hasil-foto { width: 100%; height: auto; display: none; border-radius: 8px; }
+    #kamera-preview {
+      width: 100%;
+      height: auto;
+      display: block;
+      transform: scaleX(-1);
+    }
+
+    #hasil-foto {
+      width: 100%;
+      height: auto;
+      display: none;
+      border-radius: 8px;
+    }
+
     #canvas { display: none; }
 
     .snackbar {
@@ -130,13 +146,44 @@
       margin-top: 15px;
       display: none;
     }
+
     .snackbar.success { background-color: var(--success-color); }
 
-    .table-responsive { width: 100%; overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 9.5pt; }
-    th { background-color: var(--primary-color); color: white; text-align: left; padding: 10px 6px; font-weight: 600; }
-    td { padding: 10px 6px; border-bottom: 1px solid #e2e8f0; color: #4a5568; }
-    .badge { padding: 3px 5px; border-radius: 4px; font-size: 8pt; font-weight: bold; color: white; }
+    /* Gaya Desain Tabel Riwayat Android */
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 10pt;
+    }
+
+    th {
+      background-color: var(--primary-color);
+      color: white;
+      text-align: left;
+      padding: 10px 8px;
+      font-weight: 600;
+    }
+
+    td {
+      padding: 10px 8px;
+      border-bottom: 1px solid #e2e8f0;
+      color: #4a5568;
+    }
+
+    tr:last-child td { border-bottom: none; }
+    .badge {
+      padding: 4px 6px;
+      border-radius: 4px;
+      font-size: 8.5pt;
+      font-weight: bold;
+      color: white;
+    }
     .badge-masuk { background-color: var(--success-color); }
     .badge-pulang { background-color: #dd6b20; }
   </style>
@@ -144,12 +191,14 @@
 <body>
 
   <div class="android-container">
+    
     <div class="app-bar">
       ABSENSI DIGITAL
       <span>Desa Tanjung Nyiur • Pulau Sembilan</span>
     </div>
 
     <div class="app-content">
+      
       <div id="area-login" class="android-card">
         <h3 style="text-align: center; margin-top: 0; color: var(--primary-color);">Verifikasi Masuk</h3>
         <div class="form-group">
@@ -196,35 +245,38 @@
         <div id="snackbar-info" class="snackbar"></div>
 
         <div class="android-card" style="margin-top: 20px;">
-          <h4 style="margin-top: 0; margin-bottom: 10px; color: var(--primary-color); border-bottom: 2px solid #e2e8f0; padding-bottom: 5px;">Riwayat Kehadiran Perangkat:</h4>
+          <h4 style="margin-top: 0; margin-bottom: 10px; color: var(--primary-color); border-bottom: 2px solid #e2e8f0; padding-bottom: 5px;">Sudah Absen Hari Ini:</h4>
           <div class="table-responsive">
             <table>
               <thead>
                 <tr>
-                  <th>Nama</th>
-                  <th>Status</th>
-                  <th>Waktu</th>
+                  <th>Nama Perangkat</th>
+                  <th>Keterangan</th>
+                  <th>Jam</th>
                 </tr>
               </thead>
               <tbody id="tabel-riwayat-body">
                 <tr>
-                  <td colspan="3" style="text-align: center; color: #a0aec0; font-style: italic;">Memuat data riwayat...</td>
+                  <td colspan="3" style="text-align: center; color: #a0aec0; font-style: italic;">Belum ada yang absen hari ini</td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
+
       </div>
+
     </div>
   </div>
 
   <script>
-    // ⚠️ MASUKKAN URL GOOGLE APPS SCRIPT WEB APP BARU ANDA DI SINI
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby_ZWo84YHzbmrO4l38nO2bnIjGpMrl_JPgy37hbOxzLR7BtCaZp9QISm_iMsbL5040/exec";
+    // ⚠️ SILAKAN MASUKKAN URL GOOGLE APPS SCRIPT ANDA DI SINI
+    const SCRIPT_URL = "MASUKKAN_URL_WEB_APP_ANDA_DI_SINI";
     const PIN_BENAR = "1234";
     
     let streamKamera = null;
     let fotoBase64 = "";
+    let daftarHadirLokal = [];
 
     function verifikasiAkses() {
       var pinUser = document.getElementById("pin-input").value;
@@ -232,7 +284,6 @@
         document.getElementById("area-login").style.display = "none";
         document.getElementById("area-aplikasi").style.display = "block";
         bukaKamera();
-        muatRiwayatDariSheets(); // Panggil data dari sheet begitu masuk aplikasi
       } else {
         alert("PIN Salah! Silakan coba lagi.");
       }
@@ -243,7 +294,7 @@
         streamKamera = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false });
         document.getElementById("kamera-preview").srcObject = streamKamera;
       } catch (err) {
-        alert("Gagal membuka kamera.");
+        alert("Gagal memuat kamera. Pastikan izin kamera aktif.");
       }
     }
 
@@ -251,14 +302,19 @@
       const video = document.getElementById("kamera-preview");
       const canvas = document.getElementById("canvas");
       const ctx = canvas.getContext("2d");
+      
       canvas.width = video.videoWidth || 640;
       canvas.height = video.videoHeight || 480;
+      
       ctx.translate(canvas.width, 0);
       ctx.scale(-1, 1);
       ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      
       fotoBase64 = canvas.toDataURL("image/jpeg", 0.6);
-      document.getElementById("hasil-foto").src = fotoBase64;
-      document.getElementById("hasil-foto").style.display = "block";
+      
+      const imgHasil = document.getElementById("hasil-foto");
+      imgHasil.src = fotoBase64;
+      imgHasil.style.display = "block";
       video.style.display = "none";
     }
 
@@ -269,35 +325,21 @@
       snack.className = isSuccess ? "snackbar success" : "snackbar";
     }
 
-    // FUNGSI UTAMA AMBIL DATA RIWAYAT DARI SPREADSHEET
-    function muatRiwayatDariSheets() {
+    // Fungsi memperbarui tampilan list tabel di layar HP
+    function perbaruiTabelTampilan() {
       const tbody = document.getElementById("tabel-riwayat-body");
-      
-      fetch(SCRIPT_URL)
-        .then(res => res.json())
-        .then(data => {
-          if (data.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="3" style="text-align:center;font-style:italic;">Belum ada riwayat absensi.</td></tr>`;
-            return;
-          }
-          
-          tbody.innerHTML = "";
-          // Batasi hanya menampilkan 5 data absensi terbaru agar layar HP tidak kepanjangan
-          var dataTerbatas = data.slice(0, 5); 
-          
-          dataTerbatas.forEach(item => {
-            let badgeClass = item.tipe === "JAM MASUK" ? "badge badge-masuk" : "badge badge-pulang";
-            let row = `<tr>
-              <td><strong>${item.nama}</strong><br><span style="font-size:7.5pt;color:#a0aec0;">${item.tanggal}</span></td>
-              <td><span class="${badgeClass}">${item.tipe.replace("JAM ", "")}</span></td>
-              <td>${item.jam}</td>
-            </tr>`;
-            tbody.innerHTML += row;
-          });
-        })
-        .catch(err => {
-          tbody.innerHTML = `<tr><td colspan="3" style="text-align:center;color:red;">Gagal memuat rekap riwayat.</td></tr>`;
-        });
+      if(daftarHadirLokal.length === 0) return;
+
+      tbody.innerHTML = "";
+      daftarHadirLokal.forEach(item => {
+        let badgeClass = item.tipe === "JAM MASUK" ? "badge badge-masuk" : "badge badge-pulang";
+        let row = `<tr>
+          <td><strong>${item.nama}</strong></td>
+          <td><span class="${badgeClass}">${item.tipe}</span></td>
+          <td>${item.jam} WITA</td>
+        </tr>`;
+        tbody.innerHTML += row;
+      });
     }
 
     function kirimAbsenKeGoogleSheet() {
@@ -313,9 +355,12 @@
       let waktuLocal = new Date();
       let formatJam = waktuLocal.getHours().toString().padStart(2, '0') + ":" + waktuLocal.getMinutes().toString().padStart(2, '0');
 
+      let namaDipilih = document.getElementById("nama-perangkat").value;
+      let tipeDipilih = document.getElementById("tipe-absen").value;
+
       let payload = {
-        nama: document.getElementById("nama-perangkat").value,
-        tipe: document.getElementById("tipe-absen").value,
+        nama: namaDipilih,
+        tipe: tipeDipilih,
         jam: formatJam,
         foto: fotoBase64
       };
@@ -331,13 +376,18 @@
         btn.disabled = false;
         btn.innerText = "Kirim Absen Sekarang";
         
-        // Reset form foto
+        // Memasukkan data baru ke dalam tabel riwayat di bawah
+        daftarHadirLokal.unshift({
+          nama: namaDipilih,
+          tipe: tipeDipilih,
+          jam: formatJam
+        });
+        perbaruiTabelTampilan();
+
+        // Reset tampilan kamera kembali normal
         document.getElementById("hasil-foto").style.display = "none";
         document.getElementById("kamera-preview").style.display = "block";
         fotoBase64 = "";
-
-        // Segera segarkan ulang isi tabel riwayat secara otomatis
-        setTimeout(muatRiwayatDariSheets, 1500);
       })
       .catch(err => {
         showSnackbar("Koneksi Gagal: Data tidak terkirim.", false);
