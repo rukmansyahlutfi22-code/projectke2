@@ -112,7 +112,7 @@
       border-color: var(--secondary-color);
     }
 
-    /* Desain Tombol Android (Ripple effect simulation) */
+    /* Desain Tombol Android yang timbul (Ripple effect simulation) */
     .btn-android {
       width: 100%;
       padding: 14px;
@@ -197,8 +197,8 @@
     
     <!-- Header Aplikasi -->
     <div class="app-bar">
-      ABSENSI DIGITAL
-      <span>Desa Tanjung Nyiur • Pulau Sembilan</span>
+      ABSENSI DIGITAL DTN 2026
+      <span>Desa Tanjung Nyiur • Kecamatan Pulau Sembilan</span>
     </div>
 
     <div class="app-content">
@@ -210,8 +210,20 @@
           <label for="pin-input">Masukkan PIN Akses Perangkat:</label>
           <input type="password" id="pin-input" placeholder="1234" pattern="[0-9]*" inputmode="numeric" maxlength="4" style="text-align: center; font-size: 18pt; letter-spacing: 5px;">
         </div>
-        <button class="btn-android" onclick="verifikasiAkses()">Masuk</button>
-      </div>
+        function verifikasiAkses() {
+  // Mengambil angka PIN yang diketik oleh perangkat desa
+  var pinUser = document.getElementById("pin-input").value;
+  
+  // Memastikan PIN yang diketik sama dengan PIN_BENAR ("1234")
+  if (pinUser === PIN_BENAR) {
+    document.getElementById("area-login").style.display = "none";
+    document.getElementById("area-aplikasi").style.display = "block";
+    bukaKamera(); // Otomatis mengaktifkan kamera HP/Laptop
+  } else {
+    // Jika salah, munculkan pesan peringatan bergaya Android Snackbar
+    showSnackbar("PIN Salah! Silakan periksa kembali.", false);
+  }
+}
 
       <!-- FORM UTAMA ABSENSI -->
       <div id="area-aplikasi">
