@@ -54,7 +54,6 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      letter-spacing: 0.5px;
     }
 
     .app-bar span {
@@ -90,7 +89,7 @@
       margin-bottom: 8px;
     }
 
-    select {
+    input[type="password"], select {
       width: 100%;
       padding: 12px 14px;
       font-size: 11pt;
@@ -123,6 +122,10 @@
       background-color: var(--success-color);
       box-shadow: 0 3px 6px rgba(47, 133, 90, 0.3);
     }
+
+    /* Pengaturan Sembunyi/Muncul Halaman */
+    #area-aplikasi { display: none; }
+    #area-login { display: block; }
 
     .camera-box {
       width: 100%;
@@ -166,7 +169,7 @@
     }
   </style>
 </head>
-<body onload="bukaKamera()">
+<body>
 
   <div class="android-container">
     
@@ -177,6 +180,16 @@
 
     <div class="app-content">
       
+      <div id="area-login" class="android-card">
+        <h3 style="text-align: center; margin-top: 0; color: var(--primary-color);">Verifikasi Masuk</h3>
+        <div class="form-group">
+          <label for="pin-input">Masukkan PIN Akses:</label>
+          <input type="password" id="pin-input" placeholder="••••" pattern="[0-9]*" inputmode="numeric" maxlength="4" style="text-align: center; font-size: 18pt; letter-spacing: 5px;">
+        </div>
+        <button class="btn-android" type="button" onclick="verifikasiAkses()">Masuk Aplikasi</button>
+        <div id="snackbar-login" class="snackbar"></div>
+      </div>
+
       <div id="area-aplikasi">
         <div class="android-card">
           <div class="form-group">
@@ -218,18 +231,31 @@
   </div>
 
   <script>
-    // ⚠️ PASTIKAN URL DI BAWAH INI SUDAH DIGANTI DENGAN URL GOOGLE APPS SCRIPT WEB APP ANDA
-    const SCRIPT_URL = "MASUKKAN_URL_WEB_APP_ANDA_DI_SINI";
+    // ⚠️ GANTI DENGAN URL GOOGLE APPS SCRIPT WEB APP ANDA
+    const SCRIPT_URL = "https://rukmansyahlutfi22-code.github.io/projectke2/";
+    const PIN_BENAR = "1234"; // PIN Masuk Aplikasi
     
     let streamKamera = null;
     let fotoBase64 = "";
+
+    function verifikasiAkses() {
+      var pinUser = document.getElementById("pin-input").value;
+      
+      if (pinUser === PIN_BENAR) {
+        document.getElementById("area-login").style.display = "none";
+        document.getElementById("area-aplikasi").style.display = "block";
+        bukaKamera(); // Kamera baru aktif setelah sukses klik masuk
+      } else {
+        alert("PIN Salah! Silakan coba lagi.");
+      }
+    }
 
     async function bukaKamera() {
       try {
         streamKamera = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false });
         document.getElementById("kamera-preview").srcObject = streamKamera;
       } catch (err) {
-        showSnackbar("Gagal memuat kamera. Pastikan izin kamera diizinkan.", false);
+        alert("Gagal memuat kamera. Pastikan izin kamera diizinkan browser.");
       }
     }
 
@@ -291,7 +317,7 @@
         body: JSON.stringify(payload)
       })
       .then(() => {
-        showSnackbar("✓ Absen Berhasil Disimpan ke Google Sheets!", true);
+        showSnackbar("✓ Absen Berhasil Disimpan!", true);
         btn.disabled = false;
         btn.innerText = "Kirim Absen Sekarang";
         
