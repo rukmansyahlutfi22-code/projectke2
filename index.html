@@ -350,13 +350,6 @@
         showSnackbar("Koneksi Gagal: Data tidak terkirim.", false);
         btn.disabled = false;
         btn.innerText = "Kirim Absen Sekarang";
-        <!-- Tambahkan ini di atas tombol Kirim -->
-<div class="form-group">
-  <button type="button" class="btn-android" style="background-color: #555; margin-bottom: 5px;" onclick="deteksiLokasi()">Deteksi Lokasi Saya</button>
-  <p id="status-lokasi" style="font-size: 9pt; text-align: center; color: #718096;">Lokasi belum dideteksi.</p>
-  <input type="hidden" id="lat-input">
-  <input type="hidden" id="lon-input">
-</div>
       });
     }
   </script>
