@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Absensi Desa Tanjung Nyiur</title>
   
-  <!-- Fitur Android Fullscreen Mode ketika dipasang di HP -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="#1a365d">
@@ -33,7 +32,6 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* Container utama mensimulasikan layar Android Phone */
     .android-container {
       width: 100%;
       max-width: 480px;
@@ -45,7 +43,6 @@
       position: relative;
     }
 
-    /* Android App Bar (Header) */
     .app-bar {
       background-color: var(--primary-color);
       color: white;
@@ -68,13 +65,11 @@
       opacity: 0.8;
     }
 
-    /* Konten di dalam Aplikasi */
     .app-content {
       padding: 16px;
       flex: 1;
     }
 
-    /* Desain Kartu (Card) khas Material Design Android */
     .android-card {
       background: var(--card-color);
       border-radius: 12px;
@@ -95,8 +90,7 @@
       margin-bottom: 8px;
     }
 
-    /* Input & Select dengan gaya Android yang bersih */
-    input[type="password"], select {
+    select {
       width: 100%;
       padding: 12px 14px;
       font-size: 11pt;
@@ -104,15 +98,8 @@
       border-radius: 8px;
       box-sizing: border-box;
       background-color: #fff;
-      transition: border-color 0.2s;
     }
 
-    input[type="password"]:focus, select:focus {
-      outline: none;
-      border-color: var(--secondary-color);
-    }
-
-    /* Desain Tombol Android yang timbul (Ripple effect simulation) */
     .btn-android {
       width: 100%;
       padding: 14px;
@@ -126,11 +113,9 @@
       letter-spacing: 1px;
       cursor: pointer;
       box-shadow: 0 3px 6px rgba(43, 108, 176, 0.3);
-      transition: background-color 0.2s, transform 0.1s;
     }
 
     .btn-android:active {
-      transform: scale(0.98);
       background-color: #2c5282;
     }
 
@@ -139,13 +124,6 @@
       box-shadow: 0 3px 6px rgba(47, 133, 90, 0.3);
     }
 
-    .btn-submit:active {
-      background-color: #22543d;
-    }
-
-    /* Area Kamera & Preview */
-    #area-aplikasi { display: none; }
-    
     .camera-box {
       width: 100%;
       border-radius: 8px;
@@ -153,14 +131,13 @@
       background: #e2e8f0;
       position: relative;
       margin-bottom: 10px;
-      border: 1px solid #e2e8f0;
     }
 
     #kamera-preview {
       width: 100%;
       height: auto;
       display: block;
-      transform: scaleX(-1); /* Efek Cermin */
+      transform: scaleX(-1);
     }
 
     #hasil-foto {
@@ -172,7 +149,6 @@
 
     #canvas { display: none; }
 
-    /* Notifikasi Sukses/Gagal bergaya Snackbar Android */
     .snackbar {
       background: #323232;
       color: white;
@@ -181,7 +157,6 @@
       text-align: center;
       font-size: 10.5pt;
       font-weight: 500;
-      box-shadow: 0 3px 5px -1px rgba(0,0,0,0.2), 0 6px 10px 0 rgba(0,0,0,0.14);
       margin-top: 15px;
       display: none;
     }
@@ -191,60 +166,36 @@
     }
   </style>
 </head>
-<body>
+<body onload="bukaKamera()">
 
   <div class="android-container">
     
-    <!-- Header Aplikasi -->
     <div class="app-bar">
-      ABSENSI DIGITAL DTN 2026
-      <span>Desa Tanjung Nyiur • Kecamatan Pulau Sembilan</span>
+      ABSENSI DIGITAL
+      <span>Desa Tanjung Nyiur • Pulau Sembilan</span>
     </div>
 
     <div class="app-content">
       
-      <!-- HAK AKSES MASUK (LOGIN PIN) -->
-      <div id="area-login" class="android-card">
-        <h3 style="text-align: center; margin-top: 0; color: var(--primary-color);">Verifikasi Keamanan</h3>
-        <div class="form-group">
-          <label for="pin-input">Masukkan PIN Akses Perangkat:</label>
-          <input type="password" id="pin-input" placeholder="1234" pattern="[0-9]*" inputmode="numeric" maxlength="4" style="text-align: center; font-size: 18pt; letter-spacing: 5px;">
-        </div>
-        function verifikasiAkses() {
-  // Mengambil angka PIN yang diketik oleh perangkat desa
-  var pinUser = document.getElementById("pin-input").value;
-  
-  // Memastikan PIN yang diketik sama dengan PIN_BENAR ("1234")
-  if (pinUser === PIN_BENAR) {
-    document.getElementById("area-login").style.display = "none";
-    document.getElementById("area-aplikasi").style.display = "block";
-    bukaKamera(); // Otomatis mengaktifkan kamera HP/Laptop
-  } else {
-    // Jika salah, munculkan pesan peringatan bergaya Android Snackbar
-    showSnackbar("PIN Salah! Silakan periksa kembali.", false);
-  }
-}
-
-      <!-- FORM UTAMA ABSENSI -->
       <div id="area-aplikasi">
         <div class="android-card">
           <div class="form-group">
             <label for="nama-perangkat">Nama Perangkat Desa:</label>
             <select id="nama-perangkat">
-              <option value="Rukmansyah (Sekretaris Desa)">Rukmansyah (Sekretaris Desa)</option>[cite: 1]
-              <option value="Kepala Desa">Kepala Desa</option>[cite: 1]
-              <option value="Kaur Keuangan">Kaur Keuangan</option>[cite: 1]
-              <option value="Kaur Perencanaan">Kaur Perencanaan</option>[cite: 1]
-              <option value="Kasi Pemerintahan">Kasi Pemerintahan</option>[cite: 1]
-              <option value="Staf Desa">Staf Desa</option>[cite: 1]
+              <option value="Rukmansyah (Sekretaris Desa)">Rukmansyah (Sekretaris Desa)</option>
+              <option value="Kepala Desa">Kepala Desa</option>
+              <option value="Kaur Keuangan">Kaur Keuangan</option>
+              <option value="Kaur Perencanaan">Kaur Perencanaan</option>
+              <option value="Kasi Pemerintahan">Kasi Pemerintahan</option>
+              <option value="Staf Desa">Staf Desa</option>
             </select>
           </div>
 
           <div class="form-group">
             <label for="tipe-absen">Tipe Kehadiran:</label>
             <select id="tipe-absen">
-              <option value="JAM MASUK">JAM MASUK</option>[cite: 1]
-              <option value="JAM PULANG">JAM PULANG</option>[cite: 1]
+              <option value="JAM MASUK">JAM MASUK</option>
+              <option value="JAM PULANG">JAM PULANG</option>
             </select>
           </div>
         </div>
@@ -252,14 +203,14 @@
         <div class="android-card">
           <label>Konfirmasi Wajah (Kamera):</label>
           <div class="camera-box">
-            <video id="kamera-preview" autoplay playsinline></video>[cite: 1]
-            <img id="hasil-foto" alt="Hasil Foto">[cite: 1]
+            <video id="kamera-preview" autoplay playsinline></video>
+            <img id="hasil-foto" alt="Hasil Foto">
           </div>
-          <canvas id="canvas"></canvas>[cite: 1]
-          <button type="button" class="btn-android" style="background-color: #4a5568; box-shadow: none;" onclick="ambilFoto()">Ambil Foto Wajah</button>[cite: 1]
+          <canvas id="canvas"></canvas>
+          <button type="button" class="btn-android" style="background-color: #4a5568; box-shadow: none;" onclick="ambilFoto()">Ambil Foto Wajah</button>
         </div>
 
-        <button id="btn-kirim" class="btn-android btn-submit" onclick="kirimAbsenKeGoogleSheet()">Kirim Absen Sekarang</button>[cite: 1]
+        <button id="btn-kirim" class="btn-android btn-submit" onclick="kirimAbsenKeGoogleSheet()">Kirim Absen Sekarang</button>
         <div id="snackbar-info" class="snackbar"></div>
       </div>
 
@@ -267,52 +218,39 @@
   </div>
 
   <script>
-    // Taruh URL Google Apps Script Web App Anda di sini setelah di-deploy
-    const SCRIPT_URL = "https://rukmansyahlutfi22-code.github.io/projectke2/";[cite: 1]
-    const PIN_BENAR = "1234"; // PIN pintu masuk aplikasi[cite: 1]
+    // ⚠️ PASTIKAN URL DI BAWAH INI SUDAH DIGANTI DENGAN URL GOOGLE APPS SCRIPT WEB APP ANDA
+    const SCRIPT_URL = "MASUKKAN_URL_WEB_APP_ANDA_DI_SINI";
     
-    let streamKamera = null;[cite: 1]
-    let fotoBase64 = "";[cite: 1]
-
-    function verifikasiAkses() {
-      let pin = document.getElementById("pin-input").value;[cite: 1]
-      if(pin === PIN_BENAR) {[cite: 1]
-        document.getElementById("area-login").style.display = "none";[cite: 1]
-        document.getElementById("area-aplikasi").style.display = "block";[cite: 1]
-        bukaKamera();[cite: 1]
-      } else {
-        showSnackbar("PIN Salah! Silakan periksa kembali.", false);
-      }
-    }
+    let streamKamera = null;
+    let fotoBase64 = "";
 
     async function bukaKamera() {
       try {
-        streamKamera = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false });[cite: 1]
-        document.getElementById("kamera-preview").srcObject = streamKamera;[cite: 1]
+        streamKamera = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false });
+        document.getElementById("kamera-preview").srcObject = streamKamera;
       } catch (err) {
-        showSnackbar("Gagal memuat kamera. Periksa izin browser.", false);[cite: 1]
+        showSnackbar("Gagal memuat kamera. Pastikan izin kamera diizinkan.", false);
       }
     }
 
     function ambilFoto() {
-      const video = document.getElementById("kamera-preview");[cite: 1]
-      const canvas = document.getElementById("canvas");[cite: 1]
-      const ctx = canvas.getContext("2d");[cite: 1]
+      const video = document.getElementById("kamera-preview");
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
       
-      canvas.width = video.videoWidth || 640;[cite: 1]
-      canvas.height = video.videoHeight || 480;[cite: 1]
+      canvas.width = video.videoWidth || 640;
+      canvas.height = video.videoHeight || 480;
       
-      // Efek cermin agar pas dengan posisi wajah di HP
-      ctx.translate(canvas.width, 0);[cite: 1]
-      ctx.scale(-1, 1);[cite: 1]
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);[cite: 1]
+      ctx.translate(canvas.width, 0);
+      ctx.scale(-1, 1);
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
       
-      fotoBase64 = canvas.toDataURL("image/jpeg", 0.6); // Kompresi berkas foto 60% agar hemat kuota internet[cite: 1]
+      fotoBase64 = canvas.toDataURL("image/jpeg", 0.6);
       
-      const imgHasil = document.getElementById("hasil-foto");[cite: 1]
-      imgHasil.src = fotoBase64;[cite: 1]
-      imgHasil.style.display = "block";[cite: 1]
-      video.style.display = "none";[cite: 1]
+      const imgHasil = document.getElementById("hasil-foto");
+      imgHasil.src = fotoBase64;
+      imgHasil.style.display = "block";
+      video.style.display = "none";
     }
 
     function showSnackbar(pesan, isSuccess) {
@@ -327,46 +265,45 @@
     }
 
     function kirimAbsenKeGoogleSheet() {
-      if(!fotoBase64) {[cite: 1]
-        showSnackbar("Peringatan: Foto wajah wajib diambil!", false);[cite: 1]
-        return;[cite: 1]
+      if(!fotoBase64) {
+        showSnackbar("Peringatan: Foto wajah wajib diambil!", false);
+        return;
       }
       
-      const btn = document.getElementById("btn-kirim");[cite: 1]
-      btn.disabled = true;[cite: 1]
-      btn.innerText = "Memproses & Menyimpan...";[cite: 1]
+      const btn = document.getElementById("btn-kirim");
+      btn.disabled = true;
+      btn.innerText = "Memproses & Menyimpan...";
 
-      let waktuLocal = new Date();[cite: 1]
-      let formatJam = waktuLocal.getHours().toString().padStart(2, '0') + ":" + waktuLocal.getMinutes().toString().padStart(2, '0');[cite: 1]
+      let waktuLocal = new Date();
+      let formatJam = waktuLocal.getHours().toString().padStart(2, '0') + ":" + waktuLocal.getMinutes().toString().padStart(2, '0');
 
-      let payload = {[cite: 1]
-        nama: document.getElementById("nama-perangkat").value,[cite: 1]
-        tipe: document.getElementById("tipe-absen").value,[cite: 1]
-        jam: formatJam,[cite: 1]
-        foto: fotoBase64[cite: 1]
-      };[cite: 1]
+      let payload = {
+        nama: document.getElementById("nama-perangkat").value,
+        tipe: document.getElementById("tipe-absen").value,
+        jam: formatJam,
+        foto: fotoBase64
+      };
 
-      fetch(SCRIPT_URL, {[cite: 1]
-        method: "POST",[cite: 1]
-        mode: "no-cors", // Menghindari pemblokiran CORS Android browser[cite: 1]
-        headers: { "Content-Type": "application/json" },[cite: 1]
-        body: JSON.stringify(payload)[cite: 1]
-      })[cite: 1]
-      .then(() => {[cite: 1]
-        showSnackbar("✓ Absen Berhasil Disimpan ke Google Sheets!", true);[cite: 1]
-        btn.disabled = false;[cite: 1]
-        btn.innerText = "Kirim Absen Sekarang";[cite: 1]
+      fetch(SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      })
+      .then(() => {
+        showSnackbar("✓ Absen Berhasil Disimpan ke Google Sheets!", true);
+        btn.disabled = false;
+        btn.innerText = "Kirim Absen Sekarang";
         
-        // Reset form kamera untuk pengabsen berikutnya
-        document.getElementById("hasil-foto").style.display = "none";[cite: 1]
-        document.getElementById("kamera-preview").style.display = "block";[cite: 1]
-        fotoBase64 = "";[cite: 1]
-      })[cite: 1]
-      .catch(err => {[cite: 1]
-        showSnackbar("Koneksi Gagal: Data tidak terkirim.", false);[cite: 1]
-        btn.disabled = false;[cite: 1]
-        btn.innerText = "Kirim Absen Sekarang";[cite: 1]
-      });[cite: 1]
+        document.getElementById("hasil-foto").style.display = "none";
+        document.getElementById("kamera-preview").style.display = "block";
+        fotoBase64 = "";
+      })
+      .catch(err => {
+        showSnackbar("Koneksi Gagal: Data tidak terkirim.", false);
+        btn.disabled = false;
+        btn.innerText = "Kirim Absen Sekarang";
+      });
     }
   </script>
 </body>
