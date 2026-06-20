@@ -349,7 +349,6 @@
       .catch(err => {
         showSnackbar("Koneksi Gagal: Data tidak terkirim.", false);
         btn.disabled = false;
-        btn.innerText = "Kirim Absen Sekarang";
         <!-- Tambahkan ini di atas tombol Kirim -->
 <div class="form-group">
   <button type="button" class="btn-android" style="background-color: #555; margin-bottom: 5px;" onclick="deteksiLokasi()">Deteksi Lokasi Saya</button>
@@ -357,6 +356,7 @@
   <input type="hidden" id="lat-input">
   <input type="hidden" id="lon-input">
 </div>
+        btn.innerText = "Kirim Absen Sekarang";
       });
     }
   </script>
