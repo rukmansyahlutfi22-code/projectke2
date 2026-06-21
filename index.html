@@ -368,6 +368,23 @@
         btn.innerText = "Kirim Absen Sekarang";
       });
     }
-  </script>
+  </script> // Tambahkan fungsi ini di dalam tag <script>
+function updateWaktu() {
+    const sekarang = new Date();
+    
+    // Format Jam
+    const jam = sekarang.getHours().toString().padStart(2, '0');
+    const menit = sekarang.getMinutes().toString().padStart(2, '0');
+    const detik = sekarang.getSeconds().toString().padStart(2, '0');
+    document.getElementById("jam-digital").innerText = `${jam}:${menit}:${detik}`;
+    
+    // Format Tanggal
+    const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+    document.getElementById("tanggal-lengkap").innerText = sekarang.toLocaleDateString('id-ID', options);
+}
+
+// Jalankan fungsi setiap detik
+setInterval(updateWaktu, 1000);
+updateWaktu(); // Jalankan sekali saat halaman dimuat
 </body>
 </html>
