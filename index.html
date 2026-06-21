@@ -231,22 +231,7 @@
     </div>
   </div>
 
-  <script> // Fungsi untuk memperbarui jam dan tanggal secara real-time
-    function updateWaktu() {
-      const sekarang = new Date();
-      
-      // Update Jam
-      document.getElementById("jam-digital").innerText = sekarang.toLocaleTimeString('id-ID', { hour12: false });
-      
-      // Update Tanggal
-      const opsi = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
-      document.getElementById("tanggal-lengkap").innerText = sekarang.toLocaleDateString('id-ID', opsi);
-    }
-
-    // Jalankan setiap 1 detik
-    setInterval(updateWaktu, 1000);
-    // Panggil sekali agar langsung muncul saat halaman dibuka
-    updateWaktu();
+  <script>
     // ⚠️ MASUKKAN URL GOOGLE APPS SCRIPT WEB APP BARU ANDA DI SINI
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzUnkBjhLvf_sO5VlrPC4hrUojLPsuH7tG8mjJbGNWYazsUfpapRCJzJjsVS6l-PUM/exec";
     const PIN_BENAR = "1234";
