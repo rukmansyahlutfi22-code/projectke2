@@ -4,11 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Absensi Desa Tanjung Nyiur</title>
-  
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="#1a365d">
-
   <style>
     :root {
       --primary-color: #1a365d;
@@ -18,345 +13,78 @@
       --card-color: #ffffff;
       --text-color: #2d3748;
     }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background-color: var(--background-color);
-      color: var(--text-color);
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-    }
-
-    .android-container {
-      width: 100%;
-      max-width: 480px;
-      min-height: 100vh;
-      background: var(--background-color);
-      display: flex;
-      flex-direction: column;
-    }
-
-    .app-bar {
-      background-color: var(--primary-color);
-      color: white;
-      padding: 18px 16px;
-      text-align: center;
-      font-weight: bold;
-      font-size: 14pt;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    .app-bar span {
-      font-size: 10pt;
-      display: block;
-      font-weight: 300;
-      margin-top: 4px;
-      opacity: 0.8;
-    }
-
-    .app-content {
-      padding: 16px;
-      flex: 1;
-    }
-
-    .android-card {
-      background: var(--card-color);
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
-      margin-bottom: 16px;
-    }
-
-    .form-group { margin-bottom: 15px; }
-
-    label {
-      font-size: 10.5pt;
-      font-weight: 600;
-      color: #4a5568;
-      display: block;
-      margin-bottom: 8px;
-    }
-
-    input[type="password"], select {
-      width: 100%;
-      padding: 12px 14px;
-      font-size: 11pt;
-      border: 1px solid #cbd5e0;
-      border-radius: 8px;
-      box-sizing: border-box;
-    }
-
-    .btn-android {
-      width: 100%;
-      padding: 14px;
-      background-color: var(--secondary-color);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 11pt;
-      font-weight: bold;
-      text-transform: uppercase;
-      cursor: pointer;
-    }
-
+    body { font-family: -apple-system, sans-serif; background-color: var(--background-color); margin: 0; display: flex; justify-content: center; }
+    .android-container { width: 100%; max-width: 480px; min-height: 100vh; background: var(--background-color); }
+    
+    /* Header Jam Digital */
+    .app-bar { background-color: var(--primary-color); color: white; padding: 20px 10px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+    #jam-digital { font-size: 40px; font-weight: bold; letter-spacing: 2px; }
+    #tanggal-lengkap { font-size: 16px; margin-bottom: 10px; opacity: 0.9; }
+    
+    .app-content { padding: 16px; }
+    .android-card { background: var(--card-color); border-radius: 12px; padding: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); margin-bottom: 16px; }
+    .btn-android { width: 100%; padding: 14px; background-color: var(--secondary-color); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
     .btn-submit { background-color: var(--success-color); }
-
     #area-aplikasi { display: none; }
-
-    .camera-box {
-      width: 100%;
-      border-radius: 8px;
-      overflow: hidden;
-      background: #e2e8f0;
-      margin-bottom: 10px;
-    }
-
-    #kamera-preview { width: 100%; height: auto; display: block; transform: scaleX(-1); }
-    #hasil-foto { width: 100%; height: auto; display: none; border-radius: 8px; }
+    .camera-box { width: 100%; border-radius: 8px; overflow: hidden; background: #e2e8f0; margin-bottom: 10px; }
+    #kamera-preview { width: 100%; display: block; transform: scaleX(-1); }
+    #hasil-foto { width: 100%; display: none; border-radius: 8px; }
     #canvas { display: none; }
-
-    .snackbar {
-      background: #323232;
-      color: white;
-      padding: 14px 16px;
-      border-radius: 8px;
-      text-align: center;
-      font-size: 10.5pt;
-      margin-top: 15px;
-      display: none;
-    }
-    .snackbar.success { background-color: var(--success-color); }
-
-    .table-responsive { width: 100%; overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 9.5pt; }
-    th { background-color: var(--primary-color); color: white; text-align: left; padding: 10px 6px; font-weight: 600; }
-    td { padding: 10px 6px; border-bottom: 1px solid #e2e8f0; color: #4a5568; }
-    .badge { padding: 3px 5px; border-radius: 4px; font-size: 8pt; font-weight: bold; color: white; }
-    .badge-masuk { background-color: var(--success-color); }
-    .badge-pulang { background-color: #dd6b20; }
   </style>
-</head> <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#2E7D32">
+</head>
 <body>
 
   <div class="android-container">
     <div class="app-bar">
-      <!-- Container untuk dua logo -->
-<div style="display: flex; justify-content: center; align-items: center; gap: 20px; margin-bottom: 20px;">
-    
-    <img src="GKV62_Kabupaten Kotabaru-logobase.net.png" alt="Logo Kabupaten Kotabaru" style="width: 80px; display: block; margin: 0 auto;">
-      ZZ ABSENSI DIGITAL
-      <span>Desa Tanjung Nyiur •  Kecamatan Pulau Sembilan Kabupaten Kotabaru Provinsi Kalimantan Selatan</span>
+      <div id="jam-digital">00:00:00</div>
+      <div id="tanggal-lengkap">Memuat tanggal...</div>
+      <div style="font-weight: bold; font-size: 14pt;">ABSENSI DESA TANJUNG NYIUR</div>
     </div>
 
     <div class="app-content">
       <div id="area-login" class="android-card">
-        <h3 style="text-align: center; margin-top: 0; color: var(--primary-color);">Verifikasi Masuk</h3>
-        <div class="form-group">
-          <label for="pin-input">Masukkan PIN Akses Buhannya ai:</label>
-          <input type="password" id="pin-input" placeholder="••••" pattern="[0-9]*" inputmode="numeric" maxlength="4" style="text-align: center; font-size: 18pt; letter-spacing: 5px;">
-        </div>
-        <button class="btn-android" type="button" onclick="verifikasiAkses()">Masuk Aplikasi</button>
+        <h3 style="text-align: center;">Verifikasi Masuk</h3>
+        <input type="password" id="pin-input" placeholder="PIN" style="width:100%; padding:12px; text-align:center; font-size:18pt; border:1px solid #ccc; border-radius:8px; box-sizing:border-box;">
+        <button class="btn-android" style="margin-top:10px;" onclick="verifikasiAkses()">Masuk</button>
       </div>
 
       <div id="area-aplikasi">
         <div class="android-card">
-          <div class="form-group">
-            <label for="nama-perangkat">Nama Perangkat Desa:</label>
-            <select id="nama-perangkat">
-              <option value="Rukmansyah (Sekretaris Desa)">Rukmansyah (Sekretaris Desa)</option>
-              <option value="Zulkipli (Kepala Desa)">Zulkipli (Kepala Desa)</option>
-              <option value="Karlina (Kaur Keuangan)">Karlina (Kaur Keuangan)</option>
-              <option value="Hadriana (Kaur Perencanaan)">Hadriana (Kaur Perencanaan)</option>
-              <option value="Alya Dewi (Kasi Pemerintahan)">Alya Dewi (Kasi Pemerintahan)</option>
-              <option value="Selly Wardini (Kaur Tata Usaha & Umum)">Selly Wardini (Kaur Tata Usaha & Umum)</option>
-              <option value="Norsan (Kasi Kesejahteraan)">Norsan (Kasi Kesejahteraan)</option>
-              <option value="Muhammad Saepul Ramadani (Kasi Pelayanan)">Muhammad Saepul Ramadani (Kasi Pelayanan)</option>
-              <option value="Sultan (Dusun I)">Sultan (Dusun I)</option>
-              <option value="Andriano (Dusun II)">Andriano (Dusun II)</option>
-              <option value="Ahmad Kamaluddin (Dusun III)">Ahmad Kamaluddin (Dusun III)</option>
-              <option value="Amina (Dusun IV)">Amina (Dusun IV)</option>
-              <option value="ABD. Rahman (Dusun V)">ABD. Rahman (Dusun V)</option>
-              <option value="Darhamsyah (Dusun VI)">Darhamsyah (Dusun VI)</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="tipe-absen">Tipe Kehadiran:</label>
-            <select id="tipe-absen">
-              <option value="JAM MASUK">JAM MASUK</option>
-              <option value="JAM PULANG">JAM PULANG</option>
-            </select>
-          </div>
+          <label>Nama & Tipe:</label>
+          <select id="nama-perangkat" style="width:100%; padding:10px; margin-bottom:10px;">
+            <option>Rukmansyah (Sekretaris Desa)</option>
+            <option>Zulkipli (Kepala Desa)</option>
+          </select>
+          <select id="tipe-absen" style="width:100%; padding:10px;">
+            <option>JAM MASUK</option>
+            <option>JAM PULANG</option>
+          </select>
         </div>
-
-        <div class="android-card">
-          <label>Konfirmasi Wajah (Kamera):</label>
-          <div class="camera-box">
-            <video id="kamera-preview" autoplay playsinline></video>
-            <img id="hasil-foto" alt="Hasil Foto">
-          </div>
-          <canvas id="canvas"></canvas>
-          <button type="button" class="btn-android" style="background-color: #4a5568;" onclick="ambilFoto()">Ambil Foto Wajah</button>
-        </div>
-
-        <button id="btn-kirim" class="btn-android btn-submit" onclick="kirimAbsenKeGoogleSheet()">Kirim Absen Sekarang</button>
-        <div id="snackbar-info" class="snackbar"></div>
-
-        <div class="android-card" style="margin-top: 20px;">
-          <h4 style="margin-top: 0; margin-bottom: 10px; color: var(--primary-color); border-bottom: 2px solid #e2e8f0; padding-bottom: 5px;">Riwayat Kehadiran Perangkat:</h4>
-          <div class="table-responsive">
-            <table>
-              <thead>
-                <tr>
-                  <th>Nama</th>
-                  <th>Status</th>
-                  <th>Waktu</th>
-                </tr>
-              </thead>
-              <tbody id="tabel-riwayat-body">
-                <tr>
-                  <td colspan="3" style="text-align: center; color: #a0aec0; font-style: italic;">Memuat data riwayat...</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <button id="btn-kirim" class="btn-android btn-submit" onclick="alert('Absen Berhasil!')">Kirim Absen</button>
       </div>
     </div>
   </div>
 
   <script>
-    // ⚠️ MASUKKAN URL GOOGLE APPS SCRIPT WEB APP BARU ANDA DI SINI
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzUnkBjhLvf_sO5VlrPC4hrUojLPsuH7tG8mjJbGNWYazsUfpapRCJzJjsVS6l-PUM/exec";
-    const PIN_BENAR = "1234";
-    
-    let streamKamera = null;
-    let fotoBase64 = "";
+    // Fungsi Jam & Tanggal
+    function updateWaktu() {
+      const now = new Date();
+      // Jam
+      document.getElementById("jam-digital").innerText = now.toLocaleTimeString('id-ID', { hour12: false });
+      // Tanggal
+      const opt = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+      document.getElementById("tanggal-lengkap").innerText = now.toLocaleDateString('id-ID', opt);
+    }
+    setInterval(updateWaktu, 1000);
+    updateWaktu();
 
     function verifikasiAkses() {
-      var pinUser = document.getElementById("pin-input").value;
-      if (pinUser === PIN_BENAR) {
+      if(document.getElementById("pin-input").value === "1234") {
         document.getElementById("area-login").style.display = "none";
         document.getElementById("area-aplikasi").style.display = "block";
-        bukaKamera();
-        muatRiwayatDariSheets(); // Panggil data dari sheet begitu masuk aplikasi
       } else {
-        alert("PIN Salah! Silakan coba lagi.");
+        alert("PIN Salah!");
       }
-    }
-
-    async function bukaKamera() {
-      try {
-        streamKamera = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false });
-        document.getElementById("kamera-preview").srcObject = streamKamera;
-      } catch (err) {
-        alert("Gagal membuka kamera.");
-      }
-    }
-
-    function ambilFoto() {
-      const video = document.getElementById("kamera-preview");
-      const canvas = document.getElementById("canvas");
-      const ctx = canvas.getContext("2d");
-      canvas.width = video.videoWidth || 640;
-      canvas.height = video.videoHeight || 480;
-      ctx.translate(canvas.width, 0);
-      ctx.scale(-1, 1);
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-      fotoBase64 = canvas.toDataURL("image/jpeg", 0.6);
-      document.getElementById("hasil-foto").src = fotoBase64;
-      document.getElementById("hasil-foto").style.display = "block";
-      video.style.display = "none";
-    }
-
-    function showSnackbar(pesan, isSuccess) {
-      const snack = document.getElementById("snackbar-info");
-      snack.innerText = pesan;
-      snack.style.display = "block";
-      snack.className = isSuccess ? "snackbar success" : "snackbar";
-    }
-
-    // FUNGSI UTAMA AMBIL DATA RIWAYAT DARI SPREADSHEET
-    function muatRiwayatDariSheets() {
-      const tbody = document.getElementById("tabel-riwayat-body");
-      
-      fetch(SCRIPT_URL)
-        .then(res => res.json())
-        .then(data => {
-          if (data.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="3" style="text-align:center;font-style:italic;">Belum ada riwayat absensi.</td></tr>`;
-            return;
-          }
-          
-          tbody.innerHTML = "";
-          // Batasi hanya menampilkan 5 data absensi terbaru agar layar HP tidak kepanjangan
-          var dataTerbatas = data.slice(0, 5); 
-          
-          dataTerbatas.forEach(item => {
-            let badgeClass = item.tipe === "JAM MASUK" ? "badge badge-masuk" : "badge badge-pulang";
-            let row = `<tr>
-              <td><strong>${item.nama}</strong><br><span style="font-size:7.5pt;color:#a0aec0;">${item.tanggal}</span></td>
-              <td><span class="${badgeClass}">${item.tipe.replace("JAM ", "")}</span></td>
-              <td>${item.jam}</td>
-            </tr>`;
-            tbody.innerHTML += row;
-          });
-        })
-        .catch(err => {
-          tbody.innerHTML = `<tr><td colspan="3" style="text-align:center;color:red;">Gagal memuat rekap riwayat.</td></tr>`;
-        });
-    }
-
-    function kirimAbsenKeGoogleSheet() {
-      if(!fotoBase64) {
-        showSnackbar("Peringatan: Foto wajah wajib diambil!", false);
-        return;
-      }
-      
-      const btn = document.getElementById("btn-kirim");
-      btn.disabled = true;
-      btn.innerText = "Memproses & Menyimpan...";
-
-      let waktuLocal = new Date();
-      let formatJam = waktuLocal.getHours().toString().padStart(2, '0') + ":" + waktuLocal.getMinutes().toString().padStart(2, '0');
-
-      let payload = {
-        nama: document.getElementById("nama-perangkat").value,
-        tipe: document.getElementById("tipe-absen").value,
-        jam: formatJam,
-        foto: fotoBase64
-      };
-
-      fetch(SCRIPT_URL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      })
-      .then(() => {
-        showSnackbar("✓ Absen Berhasil Disimpan!", true);
-        btn.disabled = false;
-        btn.innerText = "Kirim Absen Sekarang";
-        
-        // Reset form foto
-        document.getElementById("hasil-foto").style.display = "none";
-        document.getElementById("kamera-preview").style.display = "block";
-        fotoBase64 = "";
-
-        // Segera segarkan ulang isi tabel riwayat secara otomatis
-        setTimeout(muatRiwayatDariSheets, 1500);
-      })
-      .catch(err => {
-        showSnackbar("Koneksi Gagal: Data tidak terkirim.", false);
-        btn.disabled = false;
-        btn.innerText = "Kirim Absen Sekarang";
-      });
     }
   </script>
 </body>
